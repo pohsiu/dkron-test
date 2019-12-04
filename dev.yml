@@ -8,4 +8,4 @@ services:
       - "6868"
     command: agent --server --log-level=debug --bootstrap-expect=1
     volumes:
-      - ../dkron.data/:/dkron.data
+      - ./dkron.data/:/dkron.data
