@@ -1,0 +1,20 @@
+{
+  "name": "dk-trial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-db": "docker-compose -f dev.yml up -d",
+    "stop-db": "docker-compose -f dev.yml down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://dimension8ai.com:8001/louis.hsiao/dk-trial.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "clsx": "^1.0.4"
+  }
+}

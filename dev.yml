@@ -3,9 +3,9 @@ services:
   dkron:
     image: dkron/dkron
     ports:
-      - "18080:8080"
-      - "8946"
-      - "6868"
-    command: agent --server --log-level=debug --bootstrap-expect=1
+      - "8080:8080"
+      - "8946:8946"
+      - "6868:6868"
+    command: agent --server --log-level=debug --bootstrap-expect=1 --node-name foo
     volumes:
       - ./data/:/opt/local/dkron/dkron.data/

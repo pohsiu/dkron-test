@@ -3,9 +3,25 @@ services:
   dkron:
     image: dkron/dkron
     ports:
-      - "18080:8080"
+      - "8080:8080"
       - "8946"
       - "6868"
     command: agent --server --log-level=debug --bootstrap-expect=1
     volumes:
       - ../data/:/opt/local/dkron/dkron.data/
+  dkron-server:
+    build: .
+    ports:
+      - "8080"
+      - "8946"
+      - "6868"
+    environment:
+      - GODEBUG=netdns=go
+    command: agent --server --retry-join=dkron:8946 --log-level=debug --bootstrap-expect=3
+  dkron-agent:
+    build: .
+    ports:
+      - "8946"
+    environment:
+      - GODEBUG=netdns=go
+    command: agent --retry-join=dkron:8946 --log-level=debug
