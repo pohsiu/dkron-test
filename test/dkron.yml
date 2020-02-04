@@ -1,0 +1,4 @@
+server: true
+bootstrap-expect: 1
+node-name: foo
+log-level: debug

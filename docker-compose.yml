@@ -1,27 +1,36 @@
-version: '3'
+version: '2'
 services:
   dkron:
-    image: dkron/dkron
+    image: dkron/dkron:v2.0.4
+    container_name: leader1
     ports:
       - "8080:8080"
-      - "8946"
       - "6868"
-    command: agent --server --log-level=debug --bootstrap-expect=1
+    command: agent
     volumes:
-      - ../data/:/opt/local/dkron/dkron.data/
+      - ./data/:/opt/local/dkron/dkron.data/
+      - ./test/dkron.yml:/opt/local/dkron/config/dkron.yml
   dkron-server:
-    build: .
+    image: dkron/dkron:v2.0.4
     ports:
       - "8080"
       - "8946"
       - "6868"
+    links:
+      - dkron:dkron
+    volumes:
+      - ./test/foo2.yml:/opt/local/dkron/config/dkron.yml
     environment:
       - GODEBUG=netdns=go
-    command: agent --server --retry-join=dkron:8946 --log-level=debug --bootstrap-expect=3
+    command: agent --bootstrap-expect=3 --retry-join=dkron --node-name=foo2
   dkron-agent:
-    build: .
+    image: dkron/dkron:v2.0.4
     ports:
       - "8946"
+    links:
+      - dkron:dkron
     environment:
       - GODEBUG=netdns=go
-    command: agent --retry-join=dkron:8946 --log-level=debug
+    command: agent --retry-join=dkron --node-name=foo3
+    volumes:
+      - ./test/foo3.yml:/opt/local/dkron/config/dkron.yml
