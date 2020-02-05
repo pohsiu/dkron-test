@@ -8,12 +8,13 @@ services:
       - "6868"
     command: agent
     volumes:
-      - ./data/:/opt/local/dkron/dkron.data/
-      - ./test/dkron.yml:/opt/local/dkron/config/dkron.yml
+      - ./datas/leader1/:/opt/local/dkron/dkron.data/
+      - ./config/foo.yml:/opt/local/dkron/config/dkron.yml
     networks:
       vpcbr:
         ipv4_address: 10.5.0.6
   dkron-server:
+    container_name: server1
     image: dkron/dkron:v2.0.4
     ports:
       - "8080"
@@ -22,7 +23,8 @@ services:
     links:
       - dkron:dkron
     volumes:
-      - ./test/foo2.yml:/opt/local/dkron/config/dkron.yml
+      - ./datas/server1/:/opt/local/dkron/dkron.data/
+      - ./config/foo2.yml:/opt/local/dkron/config/dkron.yml
     environment:
       - GODEBUG=netdns=go
     command: agent --bootstrap-expect=3 --retry-join=dkron --node-name=foo2
@@ -30,16 +32,18 @@ services:
       vpcbr:
         ipv4_address: 10.5.0.7
   dkron-agent:
+    container_name: agent1
     image: dkron/dkron:v2.0.4
     ports:
       - "8946"
     links:
       - dkron:dkron
+      - dkron-server:dkServer
     environment:
       - GODEBUG=netdns=go
-    command: agent --retry-join=dkron --node-name=foo3
+    command: agent --retry-join=dkServer --node-name=foo3
     volumes:
-      - ./test/foo3.yml:/opt/local/dkron/config/dkron.yml
+      - ./config/foo3.yml:/opt/local/dkron/config/dkron.yml
     networks:
       vpcbr:
         ipv4_address: 10.5.0.8
