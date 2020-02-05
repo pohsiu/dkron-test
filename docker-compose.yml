@@ -38,10 +38,9 @@ services:
       - "8946"
     links:
       - dkron:dkron
-      - dkron-server:dkServer
     environment:
       - GODEBUG=netdns=go
-    command: agent --retry-join=dkServer --node-name=foo3
+    command: agent --retry-join=dkron --node-name=foo3
     volumes:
       - ./config/foo3.yml:/opt/local/dkron/config/dkron.yml
     networks:
