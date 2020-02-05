@@ -2,35 +2,50 @@ version: '2'
 services:
   dkron:
     image: dkron/dkron:v2.0.4
-    container_name: leader1
+    container_name: seed
     ports:
       - "8080:8080"
       - "6868"
-    command: agent
+    command: agent --server --bootstrap-expect=1 --log-level=debug --node-name=seed
     volumes:
-      - ./datas/leader1/:/opt/local/dkron/dkron.data/
-      - ./config/foo.yml:/opt/local/dkron/config/dkron.yml
+      - ./datas/seed/:/opt/local/dkron/dkron.data/
     networks:
       vpcbr:
-        ipv4_address: 10.5.0.6
+        ipv4_address: 10.5.0.2
   dkron-server:
     container_name: server1
     image: dkron/dkron:v2.0.4
     ports:
-      - "8080"
+      - "8081:8080"
       - "8946"
       - "6868"
     links:
       - dkron:dkron
     volumes:
       - ./datas/server1/:/opt/local/dkron/dkron.data/
-      - ./config/foo2.yml:/opt/local/dkron/config/dkron.yml
     environment:
       - GODEBUG=netdns=go
-    command: agent --bootstrap-expect=3 --retry-join=dkron --node-name=foo2
+    command: agent --server --bootstrap-expect=3 --retry-join=dkron --node-name=server1
     networks:
       vpcbr:
-        ipv4_address: 10.5.0.7
+        ipv4_address: 10.5.0.3
+  dkron-server2:
+    container_name: server2
+    image: dkron/dkron:v2.0.4
+    ports:
+      - "8082:8080"
+      - "8946"
+      - "6868"
+    links:
+      - dkron:dkron
+    volumes:
+      - ./datas/server2/:/opt/local/dkron/dkron.data/
+    environment:
+      - GODEBUG=netdns=go
+    command: agent --server --bootstrap-expect=3 --retry-join=dkron --node-name=server2
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.4
   dkron-agent:
     container_name: agent1
     image: dkron/dkron:v2.0.4
@@ -40,12 +55,10 @@ services:
       - dkron:dkron
     environment:
       - GODEBUG=netdns=go
-    command: agent --retry-join=dkron --node-name=foo3
-    volumes:
-      - ./config/foo3.yml:/opt/local/dkron/config/dkron.yml
+    command: agent --retry-join=dkron --node-name=agent1
     networks:
       vpcbr:
-        ipv4_address: 10.5.0.8
+        ipv4_address: 10.5.0.9
 networks:
   vpcbr:
     driver: bridge
