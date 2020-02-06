@@ -1,0 +1,49 @@
+version: '2'
+services:
+  dkron:
+    image: dkron/dkron:v2.0.4
+    container_name: testSeed
+    ports:
+      - "8080:8080"
+      - "6868"
+    command: agent --server --bootstrap-expect=2 --log-level=debug --node-name=testSeed
+    volumes:
+      - ./datas/seed/:/opt/local/dkron/dkron.data/
+  dkron-server:
+    container_name: testServer1
+    image: dkron/dkron:v2.0.4
+    ports:
+      - "8081:8080"
+      - "8946"
+      - "6868"
+    links:
+      - dkron:dkron
+    volumes:
+      - ./datas/server1/:/opt/local/dkron/dkron.data/
+    environment:
+      - GODEBUG=netdns=go
+    command: agent --server --bootstrap-expect=2 --log-level=debug --retry-join=dkron --node-name=testServer1
+  # dkron-server2:
+  #   container_name: testServer2
+  #   image: dkron/dkron:v2.0.4
+  #   ports:
+  #     - "8082:8080"
+  #     - "8946"
+  #     - "6868"
+  #   links:
+  #     - dkron:dkron
+  #   volumes:
+  #     - ./datas/server2/:/opt/local/dkron/dkron.data/
+  #   environment:
+  #     - GODEBUG=netdns=go
+  #   command: agent --server --bootstrap-expect=3 --log-level=debug --retry-join=dkron --node-name=testServer2
+  dkron-agent:
+    container_name: testAgent1
+    image: dkron/dkron:v2.0.4
+    ports:
+      - "8946"
+    links:
+      - dkron:dkron
+    environment:
+      - GODEBUG=netdns=go
+    command: agent --retry-join=dkron --node-name=testAgent1

@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
       - "6868"
-    command: agent --server --bootstrap-expect=1 --log-level=debug --node-name=seed
+    command: agent --server --bootstrap-expect=3 --log-level=debug --node-name=seed
     volumes:
       - ./datas/seed/:/opt/local/dkron/dkron.data/
     networks:
@@ -25,7 +25,7 @@ services:
       - ./datas/server1/:/opt/local/dkron/dkron.data/
     environment:
       - GODEBUG=netdns=go
-    command: agent --server --bootstrap-expect=3 --retry-join=dkron --node-name=server1
+    command: agent --server --bootstrap-expect=3 --log-level=debug --retry-join=dkron --node-name=server1
     networks:
       vpcbr:
         ipv4_address: 10.5.0.3
@@ -42,7 +42,7 @@ services:
       - ./datas/server2/:/opt/local/dkron/dkron.data/
     environment:
       - GODEBUG=netdns=go
-    command: agent --server --bootstrap-expect=3 --retry-join=dkron --node-name=server2
+    command: agent --server --bootstrap-expect=3 --log-level=debug --retry-join=dkron --node-name=server2
     networks:
       vpcbr:
         ipv4_address: 10.5.0.4
