@@ -25,3 +25,7 @@ Any new servers you introduce later can be fresh with totally clean data directo
 # Backup
 * Share Volume With dkron.data
 ```You must plan a backup strategy for the data directories, you can configure it using the --data-dir parameter, by default ./dkron.data.```
+
+# Memo
+## dkron agent --server --bootstrap-expect=X
+dkron will wait until the specified number X of servers are available and then bootstraps the cluster. This allows an initial leader to be elected automatically.
