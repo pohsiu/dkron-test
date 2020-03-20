@@ -1,5 +1,5 @@
 {
-  "name": "dk-trial",
+  "name": "d8-dkron",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://dimension8ai.com:8001/louis.hsiao/dk-trial.git"
+    "url": "https://gitlab.dimension8ai.com/global-services/d8-dkron.git"
   },
   "author": "",
   "license": "ISC",
