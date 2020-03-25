@@ -3,13 +3,13 @@
 https://dkron.io/usage/recovery/
 Check is back online or not ? A fully healthy state has return.
 
-## Single Server Cluster
+## Single Server Cluster (以一個 node 來成立 一個  cluster 的狀況)
 Restart directly, if failed create a new one.
 
-## Failed Server in Multi Cluster
+## Failed Server in Multi Cluster (以多個 node 來成立 一個 cluster 的狀況)
 Easiest option is to bring it back online and have it rejoin the cluster with the same IP address
 
-## Multi Failed Server in Multi Cluster
+## Multi Failed Server in Multi Cluster (以多個 node 來成立 多個 cluster 的狀況) -> 目前沒有成功過
 Normaly would cause data uncommitted loss and imcompleted.
 
 * You simply include just the remaining servers in the raft/peers.json recovery file. The cluster should be able to elect a leader once the remaining servers are all restarted with an identical raft/peers.json configuration.
