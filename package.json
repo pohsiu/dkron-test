@@ -1,5 +1,5 @@
 {
-  "name": "d8-dkron",
+  "name": "dkron-test",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.dimension8ai.com/global-services/d8-dkron.git"
+    "url": "https://gitlab.dimension8ai.com/global-services/dkron-test.git"
   },
   "author": "",
   "license": "ISC",
